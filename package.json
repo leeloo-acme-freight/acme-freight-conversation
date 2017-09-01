@@ -1,0 +1,26 @@
+{
+  "name": "acme-freight-conversation",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "dependencies": {
+    "dotenv": "^4.0.0",
+    "express": "^4.15.4",
+    "socket.io": "^2.0.3",
+    "watson-developer-cloud": "^2.39.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leeloo-acme-freight/acme-freight-conversation.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/leeloo-acme-freight/acme-freight-conversation/issues"
+  },
+  "homepage": "https://github.com/leeloo-acme-freight/acme-freight-conversation#readme"
+}
