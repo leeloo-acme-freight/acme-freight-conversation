@@ -4,6 +4,7 @@
   "description": "",
   "main": "app.js",
   "dependencies": {
+    "cfenv": "^1.0.4",
     "dotenv": "^4.0.0",
     "express": "^4.15.4",
     "socket.io": "^2.0.3",

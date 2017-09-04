@@ -1,4 +1,5 @@
 var express = require("express");
+var cfenv = require('cfenv');
 var app = express();
 var http = require('http');
 var Conversation = require('watson-developer-cloud/conversation/v1');
@@ -7,9 +8,6 @@ var Conversation = require('watson-developer-cloud/conversation/v1');
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').load();
 }
-
-// Send index.html to all requests
-var server = http.createServer(app);
 
 // Socket.io server listens to our app
 var io = require('socket.io').listen(server);
@@ -64,6 +62,8 @@ app.get("/", (req, res) => {
   res.send("alive and well");
 })
 
-var port = process.env.PORT || 3000
-console.log("listening on port " + port);
-server.listen(port);
+// get the app environment from Cloud Foundry
+var appEnv = cfenv.getAppEnv();
+app.listen(appEnv.port, appEnv.bind, function() {
+  console.log("server starting on " + appEnv.url);
+});
