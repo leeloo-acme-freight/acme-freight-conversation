@@ -64,6 +64,6 @@ app.get("/", (req, res) => {
   res.send("alive and well");
 })
 
-var port = process.env.PORT || 3000
+var port = (process.env.VCAP_APP_PORT || process.env.PORT || 3000);
 console.log("listening on port " + port);
 server.listen(port);
