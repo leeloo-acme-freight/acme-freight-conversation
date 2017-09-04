@@ -65,5 +65,6 @@ app.get("/", (req, res) => {
 })
 
 var port = (process.env.VCAP_APP_PORT || process.env.PORT || 3000);
-console.log("listening on port " + port);
-server.listen(port);
+var host = (process.env.VCAP_APP_HOST || process.env.HOST || 'localhost');
+console.log("listening on " + host + ':' + port);
+server.listen(port, host);
