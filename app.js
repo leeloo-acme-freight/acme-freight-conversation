@@ -22,16 +22,16 @@ function getEnvProperty(NAME) {
   )
 }
 
-console.log("Greetings from the inside");
+console.log("Greetings from conversation services");
 console.log(getEnvProperty('WAT_CONV_USERNAME')  || "no credentials");
 console.log(getEnvProperty('WAT_CONV_PASSWORD')  || "no credentials");
 console.log(getEnvProperty('WAT_CONV_WORKSPACE') || "no credentials");
 
 // Watson Services
 const conversation = new Conversation({
-  username: process.env.WAT_CONV_USERNAME,
-  password: process.env.WAT_CONV_PASSWORD,
-  path: { workspace_id: process.env.WAT_CONV_WORKSPACE },
+  username: getEnvProperty('WAT_CONV_USERNAME'),
+  password: getEnvProperty('WAT_CONV_PASSWORD'),
+  path: { workspace_id: getEnvProperty('WAT_CONV_WORKSPACE') },
   version_date: '2016-07-11'
 });
 
