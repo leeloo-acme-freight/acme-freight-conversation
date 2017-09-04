@@ -14,10 +14,18 @@ var server = http.createServer(app);
 // Socket.io server listens to our app
 var io = require('socket.io').listen(server);
 
+function getEnvProperty(NAME) {
+  return (
+    JSON.stringify(process.env[NAME] || '') ||
+    process.env[NAME] ||
+    null
+  )
+}
+
 console.log("Greetings from the inside");
-console.log(process.env.WAT_CONV_USERNAME || "no credentials");
-console.log(process.env.WAT_CONV_PASSWORD || "no credentials");
-console.log(process.env.WAT_CONV_WORKSPACE || "no credentials");
+console.log(getEnvProperty('WAT_CONV_USERNAME')  || "no credentials");
+console.log(getEnvProperty('WAT_CONV_PASSWORD')  || "no credentials");
+console.log(getEnvProperty('WAT_CONV_WORKSPACE') || "no credentials");
 
 // Watson Services
 const conversation = new Conversation({
