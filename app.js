@@ -14,24 +14,30 @@ var server = http.createServer(app);
 // Socket.io server listens to our app
 var io = require('socket.io').listen(server);
 
-function getEnvProperty(NAME) {
-  return (
-    JSON.stringify(process.env[NAME] || '') ||
-    process.env[NAME] ||
-    null
-  )
-}
+console.log("Checking if credentials were correctly received");
 
-console.log("Greetings from conversation services");
-console.log(getEnvProperty('WAT_CONV_USERNAME')  || "no credentials");
-console.log(getEnvProperty('WAT_CONV_PASSWORD')  || "no credentials");
-console.log(getEnvProperty('WAT_CONV_WORKSPACE') || "no credentials");
+const username = process.env.WAT_CONV_USERNAME;
+const password = process.env.WAT_CONV_PASSWORD;
+const workspace = process.env.WAT_CONV_WORKSPACE;
+
+const username2 = JSON.stringify(process.env.WAT_CONV_USERNAME);
+const password2 = JSON.stringify(process.env.WAT_CONV_PASSWORD);
+const workspace2 = JSON.stringify(process.env.WAT_CONV_WORKSPACE);
+
+console.log(username);
+console.log(password);
+console.log(workspace);
+
+console.log(username2);
+console.log(password2);
+console.log(workspace2);
+
 
 // Watson Services
 const conversation = new Conversation({
-  username: getEnvProperty('WAT_CONV_USERNAME'),
-  password: getEnvProperty('WAT_CONV_PASSWORD'),
-  path: { workspace_id: getEnvProperty('WAT_CONV_WORKSPACE') },
+  username: username2,
+  password: password2,
+  path: { workspace_id: workspace2 },
   version_date: '2016-07-11'
 });
 
