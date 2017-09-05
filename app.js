@@ -20,24 +20,15 @@ const username = process.env.WAT_CONV_USERNAME;
 const password = process.env.WAT_CONV_PASSWORD;
 const workspace = process.env.WAT_CONV_WORKSPACE;
 
-const username2 = JSON.stringify(process.env.WAT_CONV_USERNAME);
-const password2 = JSON.stringify(process.env.WAT_CONV_PASSWORD);
-const workspace2 = JSON.stringify(process.env.WAT_CONV_WORKSPACE);
-
 console.log(username);
 console.log(password);
 console.log(workspace);
 
-console.log(username2);
-console.log(password2);
-console.log(workspace2);
-
-
 // Watson Services
 const conversation = new Conversation({
-  username: username2,
-  password: password2,
-  path: { workspace_id: workspace2 },
+  username: username,
+  password: password,
+  path: { workspace_id: workspace },
   version_date: '2016-07-11'
 });
 
@@ -83,7 +74,7 @@ app.get("/", (req, res) => {
   res.send("alive and well");
 })
 
-var port = (process.env.VCAP_APP_PORT || process.env.PORT || 3000);
+var port = (process.env.VCAP_APP_PORT || process.env.PORT || 8080);
 var host = (process.env.VCAP_APP_HOST || process.env.HOST || 'localhost');
 console.log("listening on " + host + ':' + port);
 server.listen(port, host);
