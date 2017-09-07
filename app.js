@@ -1,6 +1,7 @@
 var express = require("express");
 var app = express();
 var http = require('http');
+var server = http.createServer(app);
 var Conversation = require('watson-developer-cloud/conversation/v1');
 
 // Used for setting environment locally via `.env` file
@@ -8,33 +9,17 @@ if (process.env.NODE_ENV !== 'production') {
   require('dotenv').load();
 }
 
-// Send index.html to all requests
-var server = http.createServer(app);
-
-// Socket.io server listens to our app
-var io = require('socket.io').listen(server);
-
-console.log("Checking if credentials were correctly received");
-
-const username = process.env.WAT_CONV_USERNAME;
-const password = process.env.WAT_CONV_PASSWORD;
-const workspace = process.env.WAT_CONV_WORKSPACE;
-
-console.log(username);
-console.log(password);
-console.log(workspace);
-
-// Watson Services
+// Watson Services SDK wrapper
 const conversation = new Conversation({
-  username: username,
-  password: password,
-  path: { workspace_id: workspace },
+  username: process.env.WAT_CONV_USERNAME,
+  password: process.env.WAT_CONV_PASSWORD,
+  path: { workspace_id: process.env.WAT_CONV_WORKSPACE },
   version_date: '2016-07-11'
 });
 
+// Logic for sending requests to Watson Conversation Service
 var context = null;
 const askWatson = (question, socket) => {
-  // Start conversation with empty message.
   console.log("Question: " + question);
   conversation.message({
     input: {
@@ -43,14 +28,13 @@ const askWatson = (question, socket) => {
     context: context
   }, processResponse);
 
-  // Process the conversation response.
+  // Upon receiving the response, relay the message via the socket to frontend
   function processResponse(err, response) {
     if (err) {
-      console.error(err); // something went wrong
+      console.error(err);
       return;
     }
 
-    // Display the output from dialog, if any.
     if (response.output.text.length != 0) {
       console.log("Answer: " + response.output.text[0]);
       context = response.context;
@@ -59,15 +43,18 @@ const askWatson = (question, socket) => {
   }
 }
 
+// Setup socket as the middleman for communication with frontend.
+var io = require('socket.io').listen(server);
+
 io.origins('*:*');
 
-// Socket.io
 io.on('connection', function(socket){
   socket.on('reqWatson', (data) => {
     askWatson(data, socket);
   });
 });
 
+// Configure app (although, really only the socket is being used)
 app.use(express.static('public'))
 
 app.get("/", (req, res) => {
